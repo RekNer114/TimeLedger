@@ -1,0 +1,25 @@
+#mvn
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+
+# Logs
+logs/
+*.log
+
+*.pid
+*.seed
+*.pid.lock
+
+Thumbs.db
+
+.idea/
+*.iml
+
+
+#env
+.env
+.env.*
