@@ -3,7 +3,7 @@ package me.vmachohan.time_ledger.repository;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import me.vmachohan.time_ledger.entity.User;
+import me.vmachohan.time_ledger.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
