@@ -5,12 +5,15 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import me.vmachohan.time_ledger.entity.User;
+import me.vmachohan.time_ledger.entity.user.User;
 import me.vmachohan.time_ledger.repository.UserRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -23,6 +26,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
+    private final RequestAttributeSecurityContextRepository contextRepository =
+            new RequestAttributeSecurityContextRepository();
 
     @Override
     protected void doFilterInternal(
@@ -51,10 +56,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             User user = userRepository.findById(userId).orElse(null);
             if (user != null) {
                 var auth = new UsernamePasswordAuthenticationToken(
-                        user, null, List.of()
+                        user, null, List.of(new SimpleGrantedAuthority("ROLE_USER"))
                 );
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(auth);
+                SecurityContext context = SecurityContextHolder.createEmptyContext();
+                context.setAuthentication(auth);
+                SecurityContextHolder.setContext(context);
+                contextRepository.saveContext(context, request, response);
             }
         }
 

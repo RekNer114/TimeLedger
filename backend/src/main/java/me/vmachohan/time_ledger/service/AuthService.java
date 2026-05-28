@@ -2,7 +2,7 @@ package me.vmachohan.time_ledger.service;
 
 import lombok.RequiredArgsConstructor;
 import me.vmachohan.time_ledger.dto.AuthDto;
-import me.vmachohan.time_ledger.entity.User;
+import me.vmachohan.time_ledger.entity.user.User;
 import me.vmachohan.time_ledger.repository.UserRepository;
 import me.vmachohan.time_ledger.security.JwtUtil;
 import org.springframework.http.HttpStatus;
